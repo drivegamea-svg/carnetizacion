@@ -1,0 +1,238 @@
+================================================================================
+DOCUMENTACIÓN DE CAMBIOS - PROYECTO CARNETIZACIÓN
+================================================================================
+Fecha: 10 de Diciembre de 2025
+Usuario: drivegamea-svg
+Repositorio: https://github.com/drivegamea-svg/carnetizacion
+
+================================================================================
+RESUMEN EJECUTIVO
+================================================================================
+
+Se realizaron correcciones y mejoras en el sistema de registro de afiliados, 
+enfocándose en:
+1. Unificar validaciones entre StoreAfiliadoRequest y UpdateAfiliadoRequest
+2. Mejorar el manejo de la cámara y fotos en el formulario create
+3. Reorganizar el layout visual de foto y huella en una sola fila
+4. Agregar inputs ocultos para indicar el origen de las imágenes (cámara vs upload)
+
+================================================================================
+PROBLEMAS IDENTIFICADOS Y SOLUCIONADOS
+================================================================================
+
+1. INCONSISTENCIA EN VALIDACIÓN DE CI (Requests)
+   Problema:
+   - StoreAfiliadoRequest permitía: 10020292 o 10020292-HG
+   - UpdateAfiliadoRequest validaba solo números sin guiones
+   
+   Solución:
+   - Unifiqué la regex en UpdateAfiliadoRequest a: ^[0-9]+(-[A-Z]{2})?$
+   - Actualicé el mensaje de error correspondiente
+   - Archivos modificados: app/Http/Requests/UpdateAfiliadoRequest.php
+
+2. INCONSISTENCIA EN EXPEDICIÓN (Requests)
+   Problema:
+   - UpdateAfiliadoRequest tenía un elemento con espacio: "...,PD, S/E"
+   - Fallaba al validar "S/E" debido al espacio antes
+   
+   Solución:
+   - Corregí la lista a: LP,SC,CBBA,OR,PT,CH,TJ,BE,PD,S/E
+   - Archivo modificado: app/Http/Requests/UpdateAfiliadoRequest.php
+
+3. FORMATO DE FECHA INCONSISTENTE (Requests)
+   Problema:
+   - StoreAfiliadoRequest exigía: date_format:d/m/Y
+   - UpdateAfiliadoRequest usaba: date (cualquier formato)
+   - El frontend envía DD/MM/YYYY, lo que fallaría en actualización
+   
+   Solución:
+   - Cambié UpdateAfiliadoRequest a: nullable|date_format:d/m/Y|before:-18 years
+   - Ajusté mensajes de validación
+   - Archivo modificado: app/Http/Requests/UpdateAfiliadoRequest.php
+
+4. OBTENCIÓN DEL ID EN UPDATE REQUEST (Routes)
+   Problema:
+   - Se usaba: $this->route('afiliado')->id
+   - Podía fallar si la ruta devolvía solo el ID sin el modelo
+   
+   Solución:
+   - Implementé lógica robusta que maneja ambos casos:
+     * Si route('afiliado') devuelve un modelo Afiliado, extrae ->id
+     * Si devuelve un string/int, lo usa directamente
+   - Archivo modificado: app/Http/Requests/UpdateAfiliadoRequest.php
+
+5. FALTA DE INDICADOR DE ORIGEN CÁMARA (Vista create.blade.php)
+   Problema:
+   - StoreAfiliadoRequest::prepareForValidation() esperaba campos:
+     * _camera_option (upload | camera)
+     * _huella_camera_option (upload | camera)
+   - El formulario no los enviaba, rompiendo la validación condicional
+   
+   Solución:
+   - Agregué dos inputs ocultos al formulario:
+     <input type="hidden" name="_camera_option" id="_camera_option" value="upload">
+     <input type="hidden" name="_huella_camera_option" id="_huella_camera_option" value="upload">
+   - Actualicé el JavaScript para establecer estos campos cuando:
+     * Usuario cambia entre "Subir archivo" y "Tomar foto"
+     * Se aplica o cancela el recorte de imagen
+   - Archivo modificado: resources/views/afiliados/create.blade.php
+
+6. LAYOUT VISUAL - FOTO Y HUELLA EN FILAS SEPARADAS
+   Problema:
+   - Las secciones de foto y huella ocupaban dos filas completas
+   - Desperdiciaba espacio horizontal en pantallas amplias
+   
+   Solución:
+   - Reorganicé el layout en UNA sola fila con 4 columnas:
+     * Columna 1 (col-md-3): Input Foto
+     * Columna 2 (col-md-3): Preview Foto
+     * Columna 3 (col-md-3): Input Huella
+     * Columna 4 (col-md-3): Preview Huella
+   - Mantengo responsividad con col-12 para móviles
+   - Archivo modificado: resources/views/afiliados/create.blade.php
+
+================================================================================
+ARCHIVOS MODIFICADOS
+================================================================================
+
+1. app/Http/Requests/UpdateAfiliadoRequest.php
+   - Líneas afectadas: reglas(), messages()
+   - Cambios:
+     * Regex CI: ^[0-9]+$ → ^[0-9]+(-[A-Z]{2})?$
+     * Expedicion: in list corregida (sin espacio en S/E)
+     * Fecha nacimiento: date → date_format:d/m/Y
+     * Obtención robusta del ID desde route()
+     * Mensajes de error actualizados
+
+2. resources/views/afiliados/create.blade.php
+   - Líneas afectadas: ~420-700 (sección de fotos y huella)
+   - Cambios:
+     * Agregados 2 inputs ocultos (_camera_option, _huella_camera_option)
+     * Reorganización de layout: 2 filas → 1 fila con 4 columnas
+     * JavaScript actualizado para mantener sincronizados los campos ocultos
+     * IDs y clases preservadas para compatibilidad con JavaScript existente
+
+================================================================================
+ARCHIVOS REVISADOS (sin cambios)
+================================================================================
+
+1. app/Http/Requests/StoreAfiliadoRequest.php
+   - Estado: OK, sin cambios necesarios
+   - Validaciones consistentes y correctas
+
+2. app/Http/Controllers/AfiliadoController.php
+   - Estado: OK, sin cambios necesarios
+   - Lógica de almacenamiento y manejo de archivos correcta
+
+3. app/Models/Afiliado.php
+   - Estado: OK, sin cambios necesarios
+   - Fillable, relaciones y casts correctos
+
+4. app/Models/ArchivoAfiliado.php
+   - Estado: OK, sin cambios necesarios
+   - Modelo y relaciones correctas
+
+================================================================================
+CONFIGURACIÓN GIT Y REPOSITORIO REMOTO
+================================================================================
+
+Pasos ejecutados:
+1. Instalación de Git en Windows
+2. Configuración global de usuario:
+   - Usuario: drivegamea-svg
+   - Email: drivegamea@gmail.com
+
+3. Inicialización del repositorio local:
+   - Ejecutado: git init
+   - Rama renombrada a: main
+   - Remote agregado: origin → https://github.com/drivegamea-svg/carnetizacion.git
+
+4. Commit inicial:
+   - Hash: b3cf8ae1
+   - Mensaje: "Initial commit: agregar proyecto carnetizacion con validaciones unificadas"
+   - Fecha: 10/12/2025
+
+5. Push a GitHub:
+   - Comando: git push -u origin main
+   - Estado: ✅ Exitoso
+   - URL del repo: https://github.com/drivegamea-svg/carnetizacion
+
+================================================================================
+CÓMO TRABAJAR CON EL REPOSITORIO
+================================================================================
+
+Clonar el repositorio:
+  git clone https://github.com/drivegamea-svg/carnetizacion.git
+
+Ver historial de commits:
+  git log --oneline -n 10
+
+Ver cambios locales:
+  git status
+  git diff
+
+Crear una nueva rama para características:
+  git checkout -b feature/nombre-feature
+  git add -A
+  git commit -m "descripción del cambio"
+  git push -u origin feature/nombre-feature
+
+Mergear cambios a main:
+  git checkout main
+  git pull origin main
+  git merge feature/nombre-feature
+  git push origin main
+
+================================================================================
+PRÓXIMOS PASOS RECOMENDADOS
+================================================================================
+
+1. Pruebas manuales del formulario create:
+   - Subir foto por upload → verificar cropper y preview
+   - Tomar foto por cámara → verificar captura y cropper
+   - Verificar que los campos ocultos (_camera_option) se envíen correctamente
+   - Probar con diferentes tamaños de ventana (responsive)
+
+2. Pruebas de validación:
+   - CI válido e inválido
+   - Expedición válida e inválida
+   - Fecha de nacimiento válida (mayor de 18 años)
+   - Archivos adjuntos (tipo y tamaño)
+
+3. Pruebas de edición (UpdateAfiliadoRequest):
+   - Actualizar datos de un afiliado existente
+   - Verificar que las validaciones funcionan correctamente
+
+4. Agregar .gitignore (recomendado):
+   node_modules/
+   vendor/
+   .env
+   .env.local
+   storage/logs/*
+   storage/app/public/*
+   public/storage
+   bootstrap/cache/*
+
+5. Agregar README.md al repositorio con instrucciones de instalación
+
+================================================================================
+NOTAS TÉCNICAS
+================================================================================
+
+- Los cambios mantienen compatibilidad hacia atrás con el JavaScript existente
+- Todos los IDs de elementos HTML se preservaron para evitar romper funcionalidad
+- Los inputs ocultos se sincroniza automáticamente con el formulario
+- El layout es responsivo: 4 columnas en md+, apiladas en móviles
+- Las validaciones ahora son consistentes entre Store y Update
+
+================================================================================
+CONTACTO Y SOPORTE
+================================================================================
+
+Repositorio: https://github.com/drivegamea-svg/carnetizacion
+Usuario GitHub: drivegamea-svg
+Email de contacto: drivegamea@gmail.com
+
+================================================================================
+FIN DE LA DOCUMENTACIÓN
+================================================================================
