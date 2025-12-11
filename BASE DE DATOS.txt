@@ -1,0 +1,97 @@
+COMANDOS ANTOIGUOS DE OTRO SISTEMA composer global require laravel/installer
+composer install
+laravel new permisos_viajes
+cd permisos_viajes
+npm install 
+npm run build
+
+npm run dev
+
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=bd_permiso_viaje
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+
+php -m | findstr pgsql
+extension=pdo_pgsql
+extension=pgsql
+
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+php artisan migrate
+php artisan make:seeder RolesAndPermissionsSeeder
+php artisan db:seed --class=RolesAndPermissionsSeeder
+
+
+use Spatie\Permission\Traits\HasRoles;
+
+class User extends Authenticatable
+{
+    use HasRoles;
+
+    // el resto del modelo...
+}
+
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm install 
+php artisan migrate
+
+php artisan make:controller Admin/UserController --resource
+php artisan make:controller Admin/RoleController --resource
+src="\.\.\/assets\/(.*?)"
+src="{{ asset('color-admin/assets/$1') }}"
+
+url\(\.\.\/assets\/(.*?)\)
+url({{ asset('pagina/assets/$1') }})
+
+
+composer require anhskohbo/no-captcha
+
+ 'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
+        'threshold' => env('RECAPTCHA_THRESHOLD', 0.5),
+    ],
+
+
+BASE DE DATOS;
+
+
+### **Solución sin PostGIS (Optimizada para 4 sucursales)**
+```sql
+-- 1. Crear tabla SIMPLIFICADA (sin PostGIS)
+CREATE TABLE puntos_atencion (
+    id SERIAL PRIMARY KEY,
+    nombre_oficina VARCHAR(100) NOT NULL,
+    direccion_publica TEXT NOT NULL,
+    latitud FLOAT NOT NULL,   -- Ej: -16.516556
+    longitud FLOAT NOT NULL,  -- Ej: -68.221028
+    tipo_punto VARCHAR(50) NOT NULL,
+    horario_atencion TEXT,
+    responsable VARCHAR(100),
+    activo BOOLEAN DEFAULT TRUE  -- Eliminación lógica
+);
+
+-- 2. Insertar tus 4 sucursales
+INSERT INTO puntos_atencion (
+    nombre_oficina, direccion_publica, latitud, longitud, tipo_punto, horario_atencion
+) VALUES 
+    ('JACHA UTHA - Oficina Central', 'Av. Costanera 5022', -16.516556, -68.221028, 'Central', 'L-V 8:00-16:00'),
+    ('Terminal Metropolitana', 'Av. América #456', -16.520108, -68.176710, 'Terminal', 'L-D 6:00-22:00'),
+    ('Terminal Interprovincial', 'Calle Jose Arzabe', -16.487871, -68.200172, 'Terminal', 'L-D 5:30-23:00'),
+    ('Aeropuerto', 'Av. Heroes Km7', -16.509485, -68.168214, 'Aeropuerto', '24/7');
+
+-- 3. Consulta para calcular distancia aproximada (en km) desde un punto
+SELECT 
+    nombre_oficina,
+    111.111 * SQRT(
+        POWER(latitud - (-16.50), 2) + 
+        POWER((longitud - (-68.18)) * COS(RADIANS(-16.50)), 2)
+    ) AS distancia_km
+FROM puntos_atencion
+WHERE activo = TRUE;
+```

@@ -1,0 +1,305 @@
+body,
+input,
+button {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Fondo general */
+.login-body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1c6494, #0c743c);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+.login-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    max-width: 375px;
+    margin: 0 auto;
+    /* espacio lateral en móviles */
+    padding: 0 12px;
+}
+
+.login-logo {
+    font-size: 80px;
+    /* Tamaño grande del ícono */
+    color: #0c743c;
+    /* Color principal (puedes cambiarlo) */
+    text-align: center;
+    /* Centrado horizontal */
+    margin: 0 auto 1px;
+    /* Separación abajo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caja del login */
+.login-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Encabezado */
+.login-header {
+    text-align: center;
+    padding: 25px 10px 10px;
+    background: #f7f8fa;
+}
+
+.login-title {
+    font-family: 'Poppins', sans-serif;
+    /* fuente moderna */
+    font-size: 28px;
+    /* tamaño grande y legible */
+    font-weight: 600;
+    /* semi-negrita */
+    color: #0c743c;
+    /* color principal */
+    margin: 0;
+    letter-spacing: 1px;
+    /* espacio entre letras para elegancia */
+    text-transform: capitalize;
+
+}
+
+.login-subtitle {
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    /* más pequeño que el título */
+    font-weight: 500;
+    color: #888;
+    /* color gris amigable */
+    margin-top: 8px;
+    letter-spacing: 2px;
+    /* un poco más de espaciado para destacar */
+    text-transform: uppercase;
+}
+
+/* Card interna */
+.login-card {
+    padding: 30px 15px 15px;
+}
+
+.login-instruction {
+     font-family: 'Poppins', sans-serif; /* tipografía moderna */
+    font-size: 12px;                    /* tamaño legible */
+    color: #555;                        /* gris neutro */
+    text-align: center;                  /* centrado */
+    margin-bottom: 25px;                /* espacio con el input */
+    line-height: 1.5;                   /* espacio entre líneas para lectura */
+    letter-spacing: 0.5px;  
+}
+
+
+/* Formulario */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    color: #888;
+    font-size: 14px;
+}
+
+.form-input {
+
+    width: 100%;
+    padding: 12px 40px 12px 36px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    position: static;
+}
+
+.form-input:focus {
+    border-color: #0c743c;
+    box-shadow: 0 0 10px #0c743c, 0 0 20px #0c743c;
+    animation: glow 1.5s infinite alternate;
+}
+
+/* Botón */
+.login-button {
+    background: linear-gradient(135deg, #0c743c, #1c6494);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #1c6494, #0c743c);
+    transform: translateY(-2px);
+}
+
+/* Toggle password */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Alertas */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+/* Animación */
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #0c743c, 0 0 10px #0c743c;
+    }
+
+    to {
+        box-shadow: 0 0 12px #0c743c, 0 0 25px #0c743c;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* Estilos generales para todos los mensajes de error */
+.error-message {
+    /* Color de texto rojo para indicar error */
+    color: #e3342f; /* Un rojo estándar de Laravel/Tailwind */
+    /* Tamaño de fuente más pequeño */
+    font-size: 0.8rem; 
+    /* Margen superior para separarlo del campo */
+    margin-top: 5px; 
+    /* Padding para hacerlo un poco más legible */
+    padding: 2px 5px;
+    /* Mostrar como bloque para que ocupe su propia línea */
+    display: block; 
+    /* Si quieres un fondo sutil */
+    /* background-color: #fcebeb; */
+    /* Borde a la izquierda */
+    border-left: 3px solid #e3342f;
+}
+
+/* Estilos específicos si necesitas más control */
+.email-error {
+    /* Por si necesitas ajustar el margen específicamente para el error de email */
+    margin-bottom: 5px;
+}
+
+.password-error {
+    margin-bottom: 15px; /* Más espacio antes del botón de INICIAR SESIÓN */
+}
+
+/* ============================= */
+/* 📱 Responsividad */
+/* ============================= */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .login-wrapper {
+        max-width: 90%;
+    }
+
+    .login-title {
+        font-size: 18px;
+    }
+
+    .form-input {
+        font-size: 13px;
+        padding: 10px 38px 10px 34px;
+    }
+
+    .login-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+    .login-wrapper {
+        max-width: 95%;
+    }
+
+    .login-title {
+        font-size: 16px;
+    }
+
+    .login-subtitle {
+        font-size: 12px;
+    }
+
+    .login-instruction {
+        font-size: 5px;
+    }
+
+    .form-input {
+        font-size: 12px;
+        padding: 10px 36px 10px 32px;
+    }
+
+    .login-button {
+        font-size: 13px;
+        padding: 9px;
+    }
+}

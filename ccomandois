@@ -1,0 +1,141 @@
+📜 Comandos completos para instalar y configurar Breadcrumbs en Laravel 11
+1. Crear un proyecto nuevo de Laravel 11:
+bash
+Copiar
+Editar
+composer create-project --prefer-dist laravel/laravel autorizacion_viajes "11.*"
+2. Instalar el paquete diglactic/laravel-breadcrumbs:
+bash
+Copiar
+Editar
+composer require diglactic/laravel-breadcrumbs
+3. Publicar los archivos de configuración de Breadcrumbs (opcional):
+Aunque no es necesario, puedes publicar los archivos de configuración si deseas personalizarlos. Si te da un error o no necesitas esta configuración, puedes omitirlo:
+
+bash
+Copiar
+Editar
+php artisan vendor:publish --provider="Diglactic\Breadcrumbs\BreadcrumbsServiceProvider"
+4. Crear el archivo routes/breadcrumbs.php:
+En el archivo routes/breadcrumbs.php, define los breadcrumbs que necesitas. Ejemplo para la página de inicio, dashboard y 404:
+
+php
+Copiar
+Editar
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+
+// Ejemplo de breadcrumb para la página de inicio
+Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
+    $trail->push('Inicio', route('home'));
+});
+
+// Ejemplo de breadcrumb para el dashboard
+Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Dashboard', route('dashboard'));
+});
+
+// Agrega breadcrumb para la página de error 404
+Breadcrumbs::for('errors.404', function (BreadcrumbTrail $trail) {
+    $trail->push('Página no encontrada', route('home'));
+});
+5. Incluir breadcrumbs.php en routes/web.php:
+En routes/web.php, incluye este archivo para que Laravel cargue los breadcrumbs definidos:
+
+php
+Copiar
+Editar
+require __DIR__.'/breadcrumbs.php';
+6. Crear la vista personalizada para los breadcrumbs:
+Crea la vista resources/views/vendor/breadcrumbs/custom.blade.php para mostrar los breadcrumbs de forma personalizada. Aquí un ejemplo:
+
+blade
+Copiar
+Editar
+@if (count($breadcrumbs))
+    <!-- BEGIN breadcrumb -->
+    <ol class="breadcrumb float-xl-end">
+        @foreach ($breadcrumbs as $breadcrumb)
+            @if (!is_null($breadcrumb->url) && !$loop->last)
+                <li class="breadcrumb-item">
+                    <a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a>
+                </li>
+            @else
+                <li class="breadcrumb-item active">{{ $breadcrumb->title }}</li>
+            @endif
+        @endforeach
+    </ol>
+    <!-- END breadcrumb -->
+
+    <!-- BEGIN page-header -->
+    @php
+        $last = $breadcrumbs[count($breadcrumbs) - 1];
+    @endphp
+    <h1 class="page-header">
+        {{ $last->title }} <small>{{ $small ?? 'header small text goes here...' }}</small>
+    </h1>
+    <!-- END page-header -->
+@endif
+7. Configurar Breadcrumbs::view() en AppServiceProvider.php:
+En el archivo app/Providers/AppServiceProvider.php, en el método boot(), agrega esto si deseas usar tu vista personalizada globalmente:
+
+php
+Copiar
+Editar
+use Diglactic\Breadcrumbs\Breadcrumbs;
+
+public function boot(): void
+{
+    // Si deseas usar la vista personalizada en todas las rutas
+    Breadcrumbs::view('vendor.breadcrumbs.custom');
+}
+8. Evitar errores de breadcrumbs inexistentes (opcional):
+En tus vistas Blade, usa el siguiente condicional para evitar errores si no existe un breadcrumb para la ruta actual:
+
+blade
+Copiar
+Editar
+@if (\Diglactic\Breadcrumbs\Breadcrumbs::exists(Route::currentRouteName()))
+    {{ Breadcrumbs::render(Route::currentRouteName()) }}
+@endif
+9. Usar breadcrumbs en tus vistas:
+Finalmente, en cualquier vista donde quieras mostrar los breadcrumbs, simplemente usa:
+
+blade
+Copiar
+Editar
+{{ Breadcrumbs::render('dashboard') }}
+🔄 Resumen completo en un solo bloque:
+bash
+Copiar
+Editar
+# Paso 1: Crear el proyecto de Laravel 11
+composer create-project --prefer-dist laravel/laravel autorizacion_viajes "11.*"
+
+# Paso 2: Instalar el paquete de breadcrumbs
+composer require diglactic/laravel-breadcrumbs
+
+# Paso 3: Publicar archivos de configuración (opcional)
+php artisan vendor:publish --provider="Diglactic\Breadcrumbs\BreadcrumbsServiceProvider"
+
+# Paso 4: Crear archivo de rutas de breadcrumbs en routes/breadcrumbs.php
+# Definir breadcrumbs para home, dashboard y 404
+
+# Paso 5: Incluir breadcrumbs.php en routes/web.php
+require __DIR__.'/breadcrumbs.php';
+
+# Paso 6: Crear vista personalizada para breadcrumbs en resources/views/vendor/breadcrumbs/custom.blade.php
+
+# Paso 7: Configurar la vista personalizada en AppServiceProvider.php
+Breadcrumbs::view('vendor.breadcrumbs.custom');
+
+# Paso 8: Usar breadcrumbs en las vistas con {{ Breadcrumbs::render('ruta') }}
+
+# Paso 9: Asegurarte de que no haya errores de breadcrumbs inexistentes con un condicional:
+@if (\Diglactic\Breadcrumbs\Breadcrumbs::exists(Route::currentRouteName()))
+    {{ Breadcrumbs::render(Route::currentRouteName()) }}
+@endif
+
+
+composer require biscolab/laravel-recaptcha

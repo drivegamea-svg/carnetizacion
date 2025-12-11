@@ -1,0 +1,156 @@
+.text-box {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Fondo inicial con semitransparencia para contraste */
+/* #header { */
+    /* background-color: rgba(0, 0, 0, 0.4); */
+    /* oscuro pero deja ver */
+    /* transition: background-color 0.3s ease-in-out; */
+/* } */
+
+/* Al hacer scroll, se vuelve más opaco */
+/* #header.scroll-active {
+    background-color: var(--bs-app-theme);
+} */
+
+/* Enlaces dentro del header */
+/* #header .nav-link {
+    color: white;
+    transition: color 0.3s ease-in-out;
+} */
+
+/* #header.scroll-active .nav-link {
+    color: white;
+} */
+
+/* Logo o texto institucional */
+/* #header .brand-text {
+    color: white;
+} */
+
+
+
+
+
+
+
+.theme-institucional {
+    --bs-app-theme: #df0b15;
+    /* Rojo principal */
+    --bs-app-theme-rgb: 223, 11, 21;
+
+    --bs-app-theme-color: #ffffff;
+    --bs-app-theme-color-rgb: 255, 255, 255;
+
+    --bs-app-theme-hover: #b50a12;
+    --bs-app-theme-hover-border-color: #b50a12;
+    --bs-app-theme-hover-color: #ffffff;
+
+    --bs-app-theme-active: #a30910;
+    --bs-app-theme-active-border-color: #a30910;
+    --bs-app-theme-active-color: #ffffff;
+
+    --bs-app-theme-disabled: #f36f76;
+    --bs-app-theme-disabled-border-color: #f36f76;
+    --bs-app-theme-disabled-color: #ffffff;
+}
+
+
+
+.bg-institucional-100 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(253, 215, 217, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-100 {
+    --bs-text-opacity: 1;
+    color: rgba(253, 215, 217, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-200 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(248, 178, 183, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-200 {
+    --bs-text-opacity: 1;
+    color: rgba(248, 178, 183, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-300 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(240, 142, 149, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-300 {
+    --bs-text-opacity: 1;
+    color: rgba(240, 142, 149, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-400 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(232, 106, 115, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-400 {
+    --bs-text-opacity: 1;
+    color: rgba(232, 106, 115, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-500 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(223, 11, 21, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-500 {
+    --bs-text-opacity: 1;
+    color: rgba(223, 11, 21, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-600 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(181, 10, 18, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-600 {
+    --bs-text-opacity: 1;
+    color: rgba(181, 10, 18, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-700 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(139, 8, 15, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-700 {
+    --bs-text-opacity: 1;
+    color: rgba(139, 8, 15, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-800 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(97, 6, 10, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-800 {
+    --bs-text-opacity: 1;
+    color: rgba(97, 6, 10, var(--bs-text-opacity)) !important;
+}
+
+.bg-institucional-900 {
+    --bs-bg-opacity: 1;
+    background-color: rgba(55, 3, 5, var(--bs-bg-opacity)) !important;
+}
+
+.text-institucional-900 {
+    --bs-text-opacity: 1;
+    color: rgba(55, 3, 5, var(--bs-text-opacity)) !important;
+}
+
+
+
+.bg-gradient-institucional {
+    background-color: #df0b15 !important;
+    background-image: linear-gradient(to bottom, #2cbceb, #df0b15) !important;
+}
